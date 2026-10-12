@@ -1,3 +1,4 @@
+-- Task 1: schema.sql
 CREATE TABLE IF NOT EXISTS customers (
     customer_id VARCHAR(10) PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
