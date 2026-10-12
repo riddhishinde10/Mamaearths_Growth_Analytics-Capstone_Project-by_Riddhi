@@ -1,3 +1,4 @@
+-- Task 2: seed_data.sql
 -- Insert 45 rows into customers
 INSERT INTO customers (customer_id, name, city, city_tier, signup_date, acquisition_source) VALUES
     ('C001', 'Aarav', 'Mumbai', 1, '2026-01-07', 'Organic'),
