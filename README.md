@@ -10,6 +10,8 @@ Mamaearth Growth Analytics is a data analytics project focused on analyzing orde
 The objective is to identify data-quality issues, understand revenue trends, highlight high-risk customer segments, and provide actionable recommendations for business and operations teams.
 
 ## Repository Structure
+
+```text
 Mamaearth-Growth-Analytics/
 │
 ├── data/
@@ -36,6 +38,7 @@ Mamaearth-Growth-Analytics/
 │   └── sample_output.txt
 │
 └── README.md
+```
 
 ## Project Workflow
 
