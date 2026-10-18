@@ -364,3 +364,114 @@ print(
     "₹20,318.90. This demonstrates why outlier analysis in Task 6 "
     "must be performed before interpreting the monthly revenue trend."
 )
+
+# ----- Part 3 — Task 1: Export verified findings to narrator/findings.json -----
+import json
+from pathlib import Path
+
+# Calculate raw revenue before duplicate removal
+raw_orders_for_revenue = orders.merge(
+    products[["product_id", "price"]],
+    on="product_id",
+    how="left"
+)
+
+raw_orders_for_revenue["discount_pct"] = (
+    raw_orders_for_revenue["discount_pct"].fillna(0)
+)
+
+raw_orders_for_revenue["order_value"] = (
+    raw_orders_for_revenue["quantity"]
+    * raw_orders_for_revenue["price"]
+    * (1 - raw_orders_for_revenue["discount_pct"] / 100)
+)
+
+raw_total_revenue = raw_orders_for_revenue["order_value"].sum()
+cleaned_total_revenue = analysis_df["order_value"].sum()
+
+# Calculate return rates by payment method
+payment_summary = (
+    analysis_df.groupby("payment_method")
+    .agg(
+        total_orders=("returned", "count"),
+        returned_orders=("returned", "sum")
+    )
+)
+
+payment_summary["return_rate"] = (
+    payment_summary["returned_orders"]
+    / payment_summary["total_orders"] * 100
+)
+
+# Calculate return rates by payment method and city tier
+segment_summary = (
+    analysis_df.groupby(["payment_method", "city_tier"])
+    .agg(
+        total_orders=("returned", "count"),
+        returned_orders=("returned", "sum")
+    )
+)
+
+segment_summary["return_rate"] = (
+    segment_summary["returned_orders"]
+    / segment_summary["total_orders"] * 100
+)
+
+# Find the COD + Tier-2 segment
+cod_tier2 = segment_summary.loc[("COD", 2)]
+
+# Calculate monthly revenue, including quantity outliers
+analysis_df["order_date"] = pd.to_datetime(analysis_df["order_date"])
+analysis_df["year_month"] = (
+    analysis_df["order_date"].dt.to_period("M").astype(str)
+)
+
+monthly_all = analysis_df.groupby("year_month")["order_value"].sum()
+
+# Calculate monthly revenue excluding the two quantity outlier orders
+outlier_ids = ["O0011", "O0098"]
+
+monthly_corrected = (
+    analysis_df[~analysis_df["order_id"].isin(outlier_ids)]
+    .groupby("year_month")["order_value"]
+    .sum()
+)
+
+# Build findings from calculated results
+findings = {
+    "cleaned_total_revenue_inr": round(float(cleaned_total_revenue), 2),
+    "raw_total_revenue_inr": round(float(raw_total_revenue), 2),
+    "duplicate_reconciliation_delta_inr": round(
+        float(raw_total_revenue - cleaned_total_revenue), 2
+    ),
+    "return_rate_by_payment": {
+        method: round(float(payment_summary.loc[method, "return_rate"]), 1)
+        for method in ["COD", "CARD", "UPI"]
+    },
+    "highest_risk_segment": {
+        "payment_method": "COD",
+        "city_tier": 2,
+        "return_rate_pct": round(float(cod_tier2["return_rate"]), 1)
+    },
+    "true_peak_month": {
+        "month": str(monthly_corrected.idxmax()),
+        "revenue_inr": round(float(monthly_corrected.max()), 2)
+    },
+    "outlier_inflated_month": {
+        "month": "2026-01",
+        "apparent_revenue_inr": round(float(monthly_all.loc["2026-01"]), 2),
+        "corrected_revenue_inr": round(
+            float(monthly_corrected.loc["2026-01"]), 2
+        )
+    }
+}
+
+# Create the narrator folder and write the JSON file
+output_path = Path("narrator") / "findings.json"
+output_path.parent.mkdir(parents=True, exist_ok=True)
+
+with output_path.open("w", encoding="utf-8") as file:
+    json.dump(findings, file, indent=4)
+
+print("Findings saved to:", output_path)
+print(json.dumps(findings, indent=4))
