@@ -1,0 +1,17 @@
+Situation:
+Mamaearth Growth Analytics processed 180 raw order lines. Mamaearth's cleaned total revenue is ₹97,358.30, compared with the raw total of ₹99,860.20.
+The true peak month is March (2026-03), generating ₹20,318.90 after quantity outliers are excluded.
+
+Complication:
+The raw-to-cleaned revenue reconciliation difference is ₹2,501.90, attributable to duplicate orders rather than missing-value imputation.
+COD has a return rate of 44.4%, compared with 14.7% for CARD and 18.9% for UPI.
+The highest-risk segment is COD in Tier-2 cities, with a
+54.5% return rate.
+January's apparent revenue of ₹29,582.10 falls to ₹11,637.10 after excluding the two
+quantity outliers.
+
+Resolution:
+1. Prioritize investigation of COD returns in Tier-2 cities, review return reasons and delivery confirmation processes, and monitor
+payment-method return rates by city tier.
+2. Use the corrected monthly revenue series for planning, treating March (2026-03) and ₹20,318.90 as the verified peak.
+3. Validate duplicate submissions before reporting revenue.
