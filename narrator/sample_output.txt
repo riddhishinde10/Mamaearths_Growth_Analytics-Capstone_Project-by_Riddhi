@@ -1,0 +1,8 @@
+### Situation
+A financial and operational audit establishes Mamaearth's verified revenue at 97358.3 INR, revised down from a raw total of 99860.2 INR after resolving a duplicate reconciliation delta of 2501.9 INR. Operational trend analysis identifies 2026-03 as the business's true peak month, generating 20318.9 INR in revenue. Prior perceptions of peak demand in 2026-01 were distorted by an outlier, which initially showed an apparent revenue of 29582.1 INR but has now been corrected to 11637.1 INR.
+
+### Complication
+High fulfillment friction and reverse logistics costs are concentrated in Cash on Delivery (COD) channels. COD orders suffer an overall return rate of 44.4%, substantially outstripping digital channels such as UPI (18.9%) and CARD (14.7%). The regional ops profile is critically strained in Tier 2 cities, where COD represents the highest-risk segment with a 54.5% return rate. Planning around the uncleaned 99860.2 INR revenue and the artificial 2026-01 revenue spike risks inventory misallocation and compounded return costs.
+
+### Resolution
+Finance and Operations must immediately baseline plans against the cleaned total revenue of 97358.3 INR and model operational capacity around the true peak in 2026-03 (20318.9 INR) rather than the corrected 2026-01 level (11637.1 INR). Regional operations must deploy stricter verification or friction measures on Tier 2 COD orders to curb the 54.5% return rate. Concurrently, regional teams
